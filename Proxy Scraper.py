@@ -57,7 +57,6 @@ count_loop = 0
 
 frequency_of_check_run = 50
 while True:
-    record_ip = ''
     error_point = 0
     try:
         error_point = 1
