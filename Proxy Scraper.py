@@ -61,6 +61,7 @@ while True:
     try:
         error_point = 1
         if count_loop % frequency_of_check_run == 0:
+            # Check if program has permission to run from developer by API
             Connect.check_run(code, 30, sound_error=True)
 
         error_point = 2
