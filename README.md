@@ -38,4 +38,4 @@ What is your ERROR proxies file name (For default, leave empty - Recorded FALSE 
 
 It will continuously work with checking performance of current proxies.
 
-![Proxy Scraper Screenshot](https://github.com/berkaymizrak/Proxy-Scraper/blob/master/Functions/proxy_scraper_screen.png?raw=true)
+![Proxy Scraper Screenshot](https://github.com/berkaymizrak/Proxy-Scraper/blob/master/Functions/proxy_scraper_screen2.png?raw=true)
