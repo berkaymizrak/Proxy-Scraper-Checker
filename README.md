@@ -22,7 +22,7 @@ pip install -r requirements.txt
 python "Proxy Scraper.py"
 ```
 
-Then answer 3 questions. You can just press enter to all for default values.
+Then answer **3 questions**. You can just press enter to all for **default values.**
 
 ```
 How often would you like to make proxy control (For default, leave empty - 5 secs.):
@@ -36,6 +36,8 @@ What is your WORKING proxies file name (For default, leave empty - Recorded OK P
 What is your ERROR proxies file name (For default, leave empty - Recorded FALSE Proxies.txt): 
 ```
 
-It will continuously work with checking performance of current proxies.
+**It will continuously work with checking performance of current proxies.**
+
+<hr>
 
 ![Proxy Scraper Screenshot](https://github.com/berkaymizrak/Proxy-Scraper/blob/master/Functions/proxy_scraper_screen2.png?raw=true)
