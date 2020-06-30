@@ -1,0 +1,12 @@
+certifi==2020.6.20
+chardet==3.0.4
+idna==2.10
+lxml==4.5.1
+numpy==1.19.0
+python-docx==0.8.10
+python-dotenv==0.13.0
+pywin32==228
+requests==2.24.0
+urllib3==1.25.9
+xlrd==1.2.0
+XlsxWriter==1.2.9
