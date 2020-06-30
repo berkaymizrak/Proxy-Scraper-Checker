@@ -73,9 +73,10 @@ while True:
 
         error_point = 4
         count_loop, proxy_decide = Connect.get_proxy(count_loop, selenium=False, error_file=error_file, ok_file=ok_file, run_test=True)
+        # Now you can use 'proxy_decide' in your requests or in selenium app.
 
         error_point = 5
-        print('Time of checking: %s' % Progress.time_definition(time.time() - first_time))
+        print('Time of fetching: %s' % Progress.time_definition(time.time() - first_time))
         print()
 
         Progress.count_down(reload)
