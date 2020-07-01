@@ -1,6 +1,6 @@
-# Proxy Scraper - Automated Non-Stop
+# Proxy Scraper & Checker - Automated Non-Stop
 
-## What is Proxy Scraper?
+## What is Proxy Scraper & Checker?
 
 This bot each defined second, crawls updated proxies to a txt file.
 
