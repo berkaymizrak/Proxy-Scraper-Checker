@@ -98,4 +98,3 @@ while True:
         Progress.exit_app(e=e, message=message, exit_all=False)
         time.sleep(1)
         continue
-
