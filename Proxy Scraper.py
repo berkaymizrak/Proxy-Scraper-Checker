@@ -6,7 +6,7 @@
 
 # Keep up to date your 200 proxies always.
 
-version = '1.2'
+version = '1.3'
 program = "Proxy Checker v%s" % version
 code = 'proxy_scraper'
 
@@ -62,7 +62,7 @@ while True:
         error_point = 1
         if count_loop % frequency_of_check_run == 0:
             # Check if program has permission to run from developer by API
-            Connect.check_run(code, 30, sound_error=True)
+            Connect.check_run(code, program, 30, sound_error=True)
 
         error_point = 2
         print('-' * 40)
