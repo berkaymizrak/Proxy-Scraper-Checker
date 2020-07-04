@@ -6,7 +6,7 @@
 
 # Keep up to date your 200 proxies always.
 
-version = '1.3'
+version = '1.5'
 program = "Proxy Checker v%s" % version
 code = 'proxy_scraper'
 
