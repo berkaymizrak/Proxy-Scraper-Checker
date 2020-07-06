@@ -18,6 +18,8 @@ pip install -r requirements.txt
 
 ## How to Run it
 
+### Running next to your app
+
 ```
 python "Proxy Scraper.py"
 ```
@@ -37,6 +39,42 @@ What is your ERROR proxies file name (For default, leave empty - Recorded FALSE 
 ```
 
 **It will continuously work with checking performance of current proxies.**
+
+### Running in your app
+
+```
+from Functions import Connect
+import requests
+from selenium import webdriver
+
+count_loop = 0
+while True:
+    count_loop += 1
+    
+    # Here we get our fresh proxy
+    count_loop, proxy_decide = Connect.get_proxy(
+        count_loop,
+        selenium=False,
+        run_test=False,
+    )
+    
+    # Your function in requests
+    response = requests.get(
+        url,
+        headers=headers,
+        stream=True,
+        proxies=proxy_decide,  # <-- HERE
+        timeout=5,
+    )
+
+    # Your function in Selenium
+    options = webdriver.ChromeOptions()
+    options.add_argument('user-agent={%s}' % user_agent)
+    options.add_argument(proxy_decide)  # <-- HERE
+    browser = webdriver.Chrome(options=options)
+
+    # do...
+```
 
 <hr>
 
