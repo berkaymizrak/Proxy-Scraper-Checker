@@ -48,7 +48,6 @@ def connect_api(https=True, domain=None, endpoint='api/external_program/', code=
 
     while True:
         try:
-            internet_connection(sound_error=sound_error)
             x += 1
             url = '%s://%s/%s' % (url_first, domain, endpoint)
 

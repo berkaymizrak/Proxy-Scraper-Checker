@@ -46,18 +46,29 @@ What is your ERROR proxies file name (For default, leave empty - Recorded FALSE 
 from Functions import Connect
 import requests
 from selenium import webdriver
+```
 
+Set count_loop for getting different proxies each time. 
+```
 count_loop = 0
 while True:
     count_loop += 1
-    
+```
+
+If you set run_test True, program checks each time whether you have enough number of proxies (default 130). If it is not enough, it fetches new ones and save it to the file. 
+
+To escape this time losing, use run_test False in your app and run my app (without modification if you didn't understand) next to your app at the same time. It will keep proxy file up to date.
+```
     # Here we get our fresh proxy
     count_loop, proxy_decide = Connect.get_proxy(
         count_loop,
         selenium=False,
         run_test=False,
     )
-    
+```
+
+Use it in requests:
+```  
     # Your function in requests
     response = requests.get(
         url,
@@ -66,7 +77,10 @@ while True:
         proxies=proxy_decide,  # <-- HERE
         timeout=5,
     )
+```
 
+Use it in Selenium:
+```
     # Your function in Selenium
     options = webdriver.ChromeOptions()
     options.add_argument('user-agent={%s}' % user_agent)

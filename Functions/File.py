@@ -341,14 +341,19 @@ def find_file(file, path='.'):
     return file
 
 
-def excel_read_to_dict(excel, number_of_sheet=0):
+def excel_read_to_dict(excel, number_of_sheet=0, exit_all=False):
+    all_data = dict()
+
     # Check and add xlsx or xls if there is not at the end.
     file_name, file_extension = os.path.splitext(excel)
     if file_extension != '.xlsx' or file_extension != '.xls':
         excel = file_name + '.xlsx'
 
+    # check all versions of the file name if it is exist in directory.
+    # (Checking with all lower and capital characters for excel name if it is equal any file.)
     excel = find_file(excel)
     if not os.path.exists(excel):
+        # So given file name could not be found in directory with any combinations of capital and lower characters.
         excel2 = None
 
         # switch between xlsx and xls
@@ -358,15 +363,20 @@ def excel_read_to_dict(excel, number_of_sheet=0):
             excel2 = file_name + '.xlsx'
 
         if excel2:
+            # if given file name is xlsx, it switched to xls in "excel2"
+            # if given file name is xls, it switched to xlsx in "excel2"
+            # and checking again...
             excel2 = find_file(excel2)
             if not os.path.exists(excel2):
                 message = "! ! File couldn't be found in folder. --> '%s' or '%s'" % (excel, excel2)
-                Progress.exit_app(message=message, exit_all=True)
+                Progress.exit_app(message=message, exit_all=exit_all)
+                return all_data
             else:
                 excel = excel2
         else:
             message = "! ! File couldn't be found in folder. --> '%s'" % (excel)
-            Progress.exit_app(message=message, exit_all=True)
+            Progress.exit_app(message=message, exit_all=exit_all)
+            return all_data
 
     workbook = xlrd.open_workbook(excel)  # sheet
     sheet = workbook.sheet_by_index(number_of_sheet)  # page
@@ -380,26 +390,7 @@ def excel_read_to_dict(excel, number_of_sheet=0):
     message = 'Reading excel...'
     time.sleep(0.01)
 
-    all_data = dict()
     number_of_data = 0
-
-    # print(sheet.ncols)
-    # print(sheet.nrows)
-    # print(sheet.cell_value(1, 5))
-    # print(sheet.row(1))
-    # print(sheet.row(1)[5])
-    # print(sheet.row(1)[5].value)
-    #
-    # print(sheet.get_rows())
-    # print(sheet.col_values(5))
-    # print(sheet.row_values(1))
-
-
-    # input('DEVAM')
-    # for rownum in range(sheet.nrows):
-    #     for col_num in range(sheet.ncols):
-    #         value = str(sheet.row(rownum)[col_num].value)
-    #         print(value)
 
     for y in range(number_of_row):
         key = sheet.cell_value(rowx=y, colx=0)
@@ -410,6 +401,7 @@ def excel_read_to_dict(excel, number_of_sheet=0):
 
         # I only get integer keys which means excel rows which has integer at first cell.
         # This is for not getting header rows in my dictionary.
+        # and I design my excels with ID column at first column.
         if isinstance(key, int):
             number_of_data += 1
             all_data[number_of_data] = list()
@@ -428,6 +420,12 @@ def excel_read_to_dict(excel, number_of_sheet=0):
         )
 
     print('\nNumber of item: %s' % len(all_data))
+    # it returns a dictionary from 3 rows excel file as:
+    # all_data = {
+    #     1: ['1st Column Value', '2nd Column Value', '3rd Column Value', '4th Column Value', '5th Column Value', ],
+    #     2: ['1st Column Value', '2nd Column Value', '3rd Column Value', '4th Column Value', '5th Column Value', ],
+    #     3: ['1st Column Value', '2nd Column Value', '3rd Column Value', '4th Column Value', '5th Column Value', ],
+    # }
     return all_data
 
 def excel_create(excel, all_data, headers=None, sizes=None, page_name='Page1', exit_all=False, ):

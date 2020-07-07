@@ -62,7 +62,7 @@ while True:
         error_point = 1
         if count_loop % frequency_of_check_run == 0:
             # Check if program has permission to run from developer by API
-            Connect.check_run(code, program, 30, sound_error=True)
+            Connect.check_run(code, program, 30, sound_error=True)  # <-- Remove this line in your app or you can create yours.
 
         error_point = 2
         print('-' * 40)

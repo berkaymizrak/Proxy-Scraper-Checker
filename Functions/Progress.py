@@ -173,6 +173,7 @@ def count_down(second, message='Counting down.'):
             now=now,
             message='%s (%s)' % (message, net_time)
         )
+    print()
 
 def count_forward(now, message='Waiting'):
     passed_time = time.time() - now
