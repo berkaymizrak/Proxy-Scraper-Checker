@@ -6,7 +6,7 @@
 
 # Keep up to date your 200 proxies always.
 
-version = '1.5'
+version = '1.6'
 program = "Proxy Checker v%s" % version
 code = 'proxy_scraper'
 
@@ -72,7 +72,15 @@ while True:
         first_time = time.time()
 
         error_point = 4
-        count_loop, proxy_decide = Connect.get_proxy(count_loop, selenium=False, error_file=error_file, ok_file=ok_file, run_test=True)
+        count_loop, proxy_decide = Connect.get_proxy(selenium=False, get_random=False, count_loop=count_loop, error_file=error_file, ok_file=ok_file, run_test=True)
+        # OR OTHER USAGE:
+        # proxy_decide = Connect.get_proxy(selenium=False, get_random=True, error_file=error_file, ok_file=ok_file, run_test=True)
+
+        # You can use get_proxy with whether count_loop or get_random.
+        # count_loop helps you to run it in while with using count_loop+=1 and you can receive proxies 1 by 1 in lines of proxy file.
+        # if get_random set True, you get proxy randomly from proxy file without looking count_loop.
+
+
         # Now you can use 'proxy_decide' in your requests or in selenium app.
         """
         response = requests.get(

@@ -203,9 +203,15 @@ def send_email(message, subject, recipient, login_mail=None, pwd=None, sender='E
         else:
             Progress.exit_app(e=e, exit_all=exit_all)
 
-def get_proxy(count_loop, selenium=True, save_false_proxies=True, error_file='Recorded FALSE Proxies.txt',
+def get_proxy(selenium=True, get_random=True, count_loop=1, save_false_proxies=True, error_file='Recorded FALSE Proxies.txt',
               save_ok_proxies=True, ok_file='Recorded OK Proxies.txt', number_of_min_saved_proxies=130,
-              run_test=True, test_header=None, test_url=None, test_timeout=1.5, sound_error=True, ):
+              run_test=True, test_header=None, test_url=None, test_timeout=1.5, sound_error=True):
+    # You can use this function with whether count_loop or get_random.
+    # count_loop helps you to run it in while with using count_loop+=1 and you can receive proxies 1 by 1 in lines of proxy file.
+    # if get_random set True, you get proxy randomly from proxy file without looking count_loop.
+    if get_random:
+        count_loop = 1
+
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.108 Safari/537.36'
     header = {"User-Agent": user_agent}
 
@@ -286,13 +292,17 @@ def get_proxy(count_loop, selenium=True, save_false_proxies=True, error_file='Re
                 message = "Proxy couldn't get. Trying again..."
                 Progress.exit_app(message=message, exit_all=False)
                 continue
-
-            remaining = count_loop % len(ok_ip_save_list)
-            remaining = len(ok_ip_save_list) - remaining
-            if remaining >= len(ok_ip_save_list):
-                remaining = 0
-            # Remaining calculated to get a proxy from our list, from LAST to FIRST.
-            record_ip = ok_ip_save_list[remaining]
+            print(ok_ip_save_list)
+            input('devam')
+            if get_random:
+                record_ip = ok_ip_save_list
+            else:
+                remaining = count_loop % len(ok_ip_save_list)
+                remaining = len(ok_ip_save_list) - remaining
+                if remaining >= len(ok_ip_save_list):
+                    remaining = 0
+                # Remaining calculated to get a proxy from our list, from LAST to FIRST.
+                record_ip = ok_ip_save_list[remaining]
             record_ip = record_ip.replace(' ', '')
             record_ip = record_ip.replace('\n', '')
             record_ip_list = record_ip.split(':', 1)
@@ -310,7 +320,8 @@ def get_proxy(count_loop, selenium=True, save_false_proxies=True, error_file='Re
             ip = record_ip_list[0]
             port = record_ip_list[1]
 
-            proxy_decide = {"http": "http://%s:%s" % (ip, port)}
+            add_proxy = "%s:%s" % (ip, port)
+            proxy_decide = {"http": "http://%s" % add_proxy, "https": "https://%s" % add_proxy}
 
             if save_false_proxies:
                 if record_ip in error_ip_list:
@@ -348,7 +359,8 @@ def get_proxy(count_loop, selenium=True, save_false_proxies=True, error_file='Re
             if selenium:
                 proxy_decide = '--proxy-server=%s:%s' % (ip, port)
             else:
-                proxy_decide = {"http": "http://%s:%s" % (ip, port)}
+                # proxy_decide defined above.
+                pass
 
             print("Proxy activated. Proxy Number: %s.\nIP: %s\tPort: %s" % (count_loop, ip, port))
         else:
