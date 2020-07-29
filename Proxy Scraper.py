@@ -55,7 +55,7 @@ print()
 
 count_loop = 0
 
-frequency_of_check_run = 50
+frequency_of_check_run = 1000
 while True:
     error_point = 0
     try:

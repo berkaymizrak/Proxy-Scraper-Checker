@@ -16,7 +16,7 @@ try:
     import lxml
 
     import smtplib
-    import email
+    from email.mime.text import MIMEText
 
     from Functions import File
     from Functions import Progress
@@ -176,7 +176,7 @@ def send_email(message, subject, recipient, login_mail=None, pwd=None, sender='E
         pwd = os.getenv('pwd')
 
     try:
-        msg = email.mime.text.MIMEText(message)
+        msg = MIMEText(message)
 
         msg['Subject'] = subject
         msg['From'] = sender
