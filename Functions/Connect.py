@@ -13,7 +13,7 @@ try:
     import requests
     import json
     import ast
-    import lxml
+    from lxml import html
 
     import smtplib
     from email.mime.text import MIMEText
@@ -93,7 +93,7 @@ def connect_api(https=True, domain=None, endpoint='api/external_program/', code=
 
                 return response
 
-        except:
+        except Exception as e:
             if inform_user_periodically:
                 if x % 2 == 0:
                     message = '\nAn error occurred while running, trying again...'
@@ -129,7 +129,7 @@ def check_run(program_code, program='', reload_time=30, sound_error=True):
             run = connect_api(code=program_code, program=program)  # Mostly returns True or False Boolean upto what you set on API
             if run != True:  # run only if "run" is True.
                 run = None
-        except:
+        except Exception as e:
             run = None
 
         if run:
@@ -205,7 +205,7 @@ def send_email(message, subject, recipient, login_mail=None, pwd=None, sender='E
 
 def get_proxy(selenium=True, get_random=True, count_loop=1, save_false_proxies=True, error_file='Recorded FALSE Proxies.txt',
               save_ok_proxies=True, ok_file='Recorded OK Proxies.txt', number_of_min_saved_proxies=130,
-              run_test=True, test_header=None, test_url=None, test_timeout=1.5, sound_error=True):
+              run_test=True, test_header=None, test_url=None, test_timeout=2, sound_error=True):
     # You can use this function with whether count_loop or get_random.
     # count_loop helps you to run it in while with using count_loop+=1 and you can receive proxies 1 by 1 in lines of proxy file.
     # if get_random set True, you get proxy randomly from proxy file without looking count_loop.
@@ -221,6 +221,7 @@ def get_proxy(selenium=True, get_random=True, count_loop=1, save_false_proxies=T
 
         if not test_url:
             url = 'https://api.myip.com/'
+            # url = 'https://api.ipify.org/'
         else:
             url = test_url
 
@@ -256,7 +257,7 @@ def get_proxy(selenium=True, get_random=True, count_loop=1, save_false_proxies=T
                     # continue to loop until get the new proxies.
                     continue
 
-                tree = lxml.html.fromstring(page.content)
+                tree = html.fromstring(page.content)
                 ips = tree.xpath('//table[@id = "proxylisttable"]//tr/td[1]')  # list of all ips
                 ports = tree.xpath('//table[@id = "proxylisttable"]//tr/td[2]')  # list of all ports
                 count_ip = 0
@@ -286,6 +287,9 @@ def get_proxy(selenium=True, get_random=True, count_loop=1, save_false_proxies=T
                             if add_ip not in ok_ip_save_list:
                                 count_ip += 1
                                 ok_ip_save_list.append(add_ip)
+
+                if save_ok_proxies:
+                    File.save_records_list(ok_file, ok_ip_save_list, overwrite=True, exit_all=False)
 
             if not len(ok_ip_save_list):
                 again = True
@@ -324,7 +328,10 @@ def get_proxy(selenium=True, get_random=True, count_loop=1, save_false_proxies=T
             ip = record_ip_list[0]
             port = record_ip_list[1]
 
-            proxy_decide = {"http": "http://%s" % record_ip, "https": "https://%s" % record_ip}
+            proxy_decide = {
+                "http": "http://%s" % record_ip,
+                # "https": "https://%s" % record_ip,
+            }
 
             if save_false_proxies:
                 if record_ip in error_ip_list:
@@ -335,7 +342,7 @@ def get_proxy(selenium=True, get_random=True, count_loop=1, save_false_proxies=T
             if run_test:
                 try:
                     if check_internet:
-                        internet_connection(timeout=4, reload_time=30, wait_for_network=True, sound_error=sound_error)
+                        internet_connection(timeout=test_timeout, reload_time=30, wait_for_network=True, sound_error=sound_error)
 
                     response = requests.get(url, proxies=proxy_decide, timeout=test_timeout, stream=True, headers=test_header)
                     if test_url:

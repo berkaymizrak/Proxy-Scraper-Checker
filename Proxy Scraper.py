@@ -6,7 +6,7 @@
 
 # Keep up to date your 200 proxies always.
 
-version = '1.6'
+version = '2.1'
 program = "Proxy Checker v%s" % version
 code = 'proxy_scraper'
 
@@ -55,7 +55,7 @@ print()
 
 count_loop = 0
 
-frequency_of_check_run = 1000
+frequency_of_check_run = 20000
 while True:
     error_point = 0
     try:
@@ -72,7 +72,8 @@ while True:
         first_time = time.time()
 
         error_point = 4
-        count_loop, proxy_decide = Connect.get_proxy(selenium=False, get_random=False, count_loop=count_loop, error_file=error_file, ok_file=ok_file, run_test=True)
+        count_loop, proxy_decide = Connect.get_proxy(selenium=False, get_random=False, count_loop=count_loop,
+                                                     error_file=error_file, ok_file=ok_file, run_test=True,)
         # OR OTHER USAGE:
         # proxy_decide = Connect.get_proxy(selenium=False, get_random=True, error_file=error_file, ok_file=ok_file, run_test=True)
 
@@ -97,7 +98,6 @@ while True:
         print()
 
         Progress.count_down(reload)
-        print()
         print()
 
     except Exception as e:
