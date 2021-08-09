@@ -5,7 +5,7 @@ lxml==4.5.1
 numpy==1.19.0
 python-docx==0.8.10
 python-dotenv==0.13.0
-pywin32==228
+pywin32==301
 requests==2.24.0
 urllib3==1.25.9
 xlrd==1.2.0
