@@ -6,7 +6,7 @@
 
 # Keep up to date your 200 proxies always.
 
-version = '2.1'
+version = '2.2'
 program = "Proxy Checker v%s" % version
 code = 'proxy_scraper'
 
@@ -43,6 +43,7 @@ while True:
 print()
 print('--> Reload time selected %s sec.' % reload)
 
+"""
 ok_file = input('\nWhat is your WORKING proxies file name (For default, leave empty - Recorded OK Proxies.txt): ')
 if not ok_file:
     ok_file = "Recorded OK Proxies.txt"
@@ -50,6 +51,7 @@ if not ok_file:
 error_file = input('\nWhat is your ERROR proxies file name (For default, leave empty - Recorded FALSE Proxies.txt): ')
 if not error_file:
     error_file = "Recorded FALSE Proxies.txt"
+"""
 
 print()
 
@@ -63,6 +65,7 @@ while True:
         if count_loop % frequency_of_check_run == 0:
             # Check if program has permission to run from developer by API
             Connect.check_run(code, program, 30, sound_error=True)  # <-- Remove this line in your app or you can create yours.
+            API_KEY = Connect.connect_api(code='proxy_scraper_proxy_orbit_api_key', program=program, )
 
         error_point = 2
         print('-' * 40)
@@ -72,8 +75,32 @@ while True:
         first_time = time.time()
 
         error_point = 4
-        count_loop, proxy_decide = Connect.get_proxy(selenium=False, get_random=False, count_loop=count_loop,
-                                                     error_file=error_file, ok_file=ok_file, run_test=True,)
+        # count_loop, proxy_decide, record_ip_type = Connect.get_proxy(
+        #     selenium=False,
+        #     get_random=False,
+        #     allow_print=True,
+        #     count_loop=count_loop,
+        #     error_file=error_file,
+        #     ok_file=ok_file,
+        #     run_test=True,
+        #     no_proxy=False,
+        #     for_https=True
+        # )
+
+        count_loop, proxy_decide, curl = Connect.get_proxy_orbit(
+            selenium=False,
+            get_random=False,
+            allow_print=True,
+            count_loop=count_loop,
+            # error_file=error_file,
+            # ok_file=ok_file,
+            number_of_save_proxies=10,
+            number_of_min_saved_proxies=5,
+            run_test=True,
+            no_proxy=False,
+            for_https=True,
+            API_KEY=API_KEY,
+        )
         # OR OTHER USAGE:
         # proxy_decide = Connect.get_proxy(selenium=False, get_random=True, error_file=error_file, ok_file=ok_file, run_test=True)
 
@@ -104,5 +131,5 @@ while True:
         message = 'An error occurred while running app.\n' \
                   'error_point: %s' % (error_point)
         Progress.exit_app(e=e, message=message, exit_all=False)
-        time.sleep(1)
+        time.sleep(3)
         continue
